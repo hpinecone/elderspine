@@ -38,6 +38,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void run() {
         while(gameThread != null){
             long currentTime = System.nanoTime();
+            long currentTime2 = System.currentTimeMillis();
             update();
 
             repaint();//calls paint component
