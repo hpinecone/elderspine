@@ -1,3 +1,5 @@
+package main;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -43,6 +45,7 @@ public class KeyBinds implements KeyListener {
         }
         if(code == KeyEvent.VK_D) {
             rightPressed = false;
-        }
+        } //
+
     }
 }
