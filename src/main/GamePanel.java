@@ -18,7 +18,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     //fps
 
-    int fps = 120;
+    int fps = 60;
 
     KeyBinds KeyB = new KeyBinds(); //instantiates binds
     Thread gameThread;
@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable{
     //set player default pos
     int playerX = 960;
     int playerY = 540;
-    int playerSpeed = 6;
+    int playerSpeed = 5;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight)); //1920 x 1024

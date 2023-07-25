@@ -28,7 +28,11 @@ public class Player extends Entity{ //hero
     }
     public void getPlayerImage() {
         try {
-            up1 = ImageIO.read(getClass().getResourceAsStream("/player/warrior.png"));
+            up1 = ImageIO.read(getClass().getResourceAsStream("/player/warrior_up.png"));
+            down1 = ImageIO.read(getClass().getResourceAsStream("/player/warrior_down.png"));
+            right1 = ImageIO.read(getClass().getResourceAsStream("/player/warrior_right.png"));
+            left1 = ImageIO.read(getClass().getResourceAsStream("/player/warrior_left.png"));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,13 +43,16 @@ public class Player extends Entity{ //hero
             playerY -= playerSpeed;
         }
         else if (KeyB.downPressed == true) {
+            direction = "down";
             playerY += playerSpeed;
         }
         else if (KeyB.rightPressed == true) {
+            direction = "right";
             playerX += playerSpeed;
         }
         else if (KeyB.leftPressed == true) {
             playerX -= playerSpeed;
+            direction = "left";
         }
         if (KeyB.leftPressed) {
             playerX -= playerSpeed;
@@ -67,6 +74,15 @@ public class Player extends Entity{ //hero
         switch (direction) {
             case "up":
                 image = up1;
+                break;
+            case "down":
+                image = down1;
+                break;
+            case "right":
+                image = right1;
+                break;
+            case "left":
+                image = left1;
                 break;
         }
         g2.drawImage(image, playerX, playerY, gp.spriteSize, gp.spriteSize, null);
