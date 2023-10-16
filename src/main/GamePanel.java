@@ -8,17 +8,31 @@ import java.awt.*;
 import java.awt.Color;
 
 public class GamePanel extends JPanel implements Runnable{
-    public int originalSpriteSize = 64;
+    //character size
+    public int originalSpriteSize = 32;
     public final int scale = 2;
+    public final int sprite1 = 8;
+    public final int sprite2 = 8;
+    public final int sprite3 = 8;
+    public final int sprite4 = 8;
     public final int spriteSize = originalSpriteSize * scale;
 
-    public final int originalTileSize = 64;
-    public final int tileScale = 1;
+    //tile size
+    public final int originalTileSize = 16;
+    public final int tileScale = 2;
     public final int tileSize = originalTileSize * tileScale;
-    final int maxScreenCol = 15;
-    final int maxScreenRow = 8;
-    final  int screenWidth = spriteSize * maxScreenCol;
-    final int screenHeight = spriteSize * maxScreenRow;
+
+    //screen dimensions
+    public final int maxScreenCol = 60;
+    public final int maxScreenRow = 34;
+    public final  int screenWidth = tileSize * maxScreenCol;
+    public final int screenHeight = tileSize * maxScreenRow;
+
+    //world settings
+    public final int maxWorldCol = 62; //change to render map size
+    public final int maxWorldRow = 34; //change to render map size
+    public final int worldWidth = tileSize * maxWorldCol;
+    public final int worldHeight = tileSize * maxWorldRow;
 
     //fps
 
@@ -26,7 +40,7 @@ public class GamePanel extends JPanel implements Runnable{
     TileManager tileM = new TileManager(this);
     KeyBinds KeyB = new KeyBinds(); //instantiates binds
     Thread gameThread;
-    Player player = new Player(this,KeyB, spriteSize);
+    public Player player = new Player(this,KeyB, spriteSize);
     //set player default pos
 
     public GamePanel() {
@@ -44,13 +58,15 @@ public class GamePanel extends JPanel implements Runnable{
     @Override
     public void run() {
 
-        double drawInterval = 1000000000/fps; //1sec/fps 0.00833 secs
+        double drawInterval = 1000000000/fps; //1sec/fps 0.00833 secs/~120
         double nextDrawTime = System.nanoTime() + drawInterval;
 
         while(gameThread != null){
             long currentTime = System.nanoTime();
             long currentTime2 = System.currentTimeMillis();
             update();
+
+            System.out.println("running (:");
 
             repaint();//calls paint component
 

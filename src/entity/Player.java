@@ -5,26 +5,40 @@ import main.KeyBinds;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Player extends Entity{ //hero
     GamePanel gp;
     KeyBinds KeyB;
+
+    public final int screenX;
+    public final int screenY;
+
     int spriteSize;
+
+    //player status/settings
+    private boolean canDash = true;
+    private long lastDashTime = 0L;
+
     public Player(GamePanel gp, KeyBinds KeyB, int spriteSize) {
         this.spriteSize = spriteSize;
         this.gp = gp;
         this.KeyB = KeyB;
 
+        screenX = gp.screenWidth/2 - (gp.tileSize/2);
+        screenY = gp.screenHeight/2 - (gp.tileSize/2);
+
         setDefaultValues();
         getPlayerImage();
     }
     public void setDefaultValues (){
-        playerX = 960;
-        playerY = 540;
+        worldX = gp.tileSize * 60;
+        worldY = gp.tileSize * 34;
+        playerHealth = 120;
         playerSpeed = 5;
-        direction = "down";
+        direction = "up";
     }
     public void getPlayerImage() {
         try {
@@ -64,31 +78,34 @@ public class Player extends Entity{ //hero
     public void update() {
         if(KeyB.upPressed == true) {
             direction = "up";
-            playerY -= playerSpeed;
+            worldY -= playerSpeed;
         }
         else if (KeyB.downPressed == true) {
             direction = "down";
-            playerY += playerSpeed;
+            worldY += playerSpeed;
         }
         else if (KeyB.rightPressed == true) {
             direction = "right";
-            playerX += playerSpeed;
+            worldX += playerSpeed;
         }
         else if (KeyB.leftPressed == true) {
-            playerX -= playerSpeed;
+            worldX -= playerSpeed;
             direction = "left";
         }
+
+        //Diagonal movement
+        //Horizontal movement
         if (KeyB.leftPressed) {
-            playerX -= playerSpeed;
+            worldX -= playerSpeed;
         } else if (KeyB.rightPressed) {
-            playerX += playerSpeed;
+            worldX += playerSpeed;
         }
 
         // Vertical movement
         if (KeyB.upPressed) {
-            playerY -= playerSpeed;
+            worldY -= playerSpeed;
         } else if (KeyB.downPressed) {
-            playerY += playerSpeed;
+            worldY += playerSpeed;
         }
 
         spriteCounter++;
@@ -107,11 +124,45 @@ public class Player extends Entity{ //hero
                 spriteNum = 1;
             }
             spriteCounter = 0;
+
+            //abilities
+            //dash
+            if(KeyB.ePressed && canDash) {
+                long currentTime = System.currentTimeMillis();
+
+                if (currentTime - lastDashTime >= 1000) {
+                    lastDashTime = currentTime;
+
+                    float dashSpeed = 250;
+                    switch (direction) {
+                        case "up":
+                            worldY -= dashSpeed;
+                            break;
+                        case "down":
+                            worldY += dashSpeed;
+                            break;
+                        case "right":
+                            worldX += dashSpeed;
+                            break;
+                        case "left":
+                            worldX -= dashSpeed;
+                            break;
+                    }
+                    canDash = false;
+                }
+            }
+        }
+        if(!canDash){
+            long currentTime = System.currentTimeMillis();
+            if(currentTime - lastDashTime >= 100){
+             canDash = true;
+            }
         }
     }
+
     public void draw(Graphics2D g2) {
         //g2.setColor(Color.white);
-        //g2.fillRect(playerX, playerY, spriteSize, spriteSize);
+        //g2.fillRect(worldX, worldY, spriteSize, spriteSize);
         BufferedImage image = null;
         switch (direction) {
             case "up":
@@ -208,6 +259,6 @@ public class Player extends Entity{ //hero
                 }
                 break;
         }
-        g2.drawImage(image, playerX, playerY, gp.spriteSize, gp.spriteSize, null);
+        g2.drawImage(image, screenX, screenY, gp.spriteSize, gp.spriteSize, null);
     }
 }

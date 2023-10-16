@@ -11,9 +11,14 @@ public class Main {
         window.add(gamePanel);
         window.pack();
         window.setLocationRelativeTo(null);
-        window.setVisible(true); //jframe end
+        window.setVisible(true); //window visible
+        window.setExtendedState(JFrame.MAXIMIZED_BOTH); //starts maximized/manipulate with bool
+        //jframe end
 
         gamePanel.startGameThread(); //calls start operation
 
     }
 }
+/*
+    inspired/borrowed from RyiSnow https://www.youtube.com/@RyiSnow <3
+ */
